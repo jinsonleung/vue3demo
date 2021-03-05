@@ -35,8 +35,8 @@
   </el-form>
 </template>
 
-<script>
-import { defineComponent, getCurrentInstance } from "vue";
+<script lang="ts">
+import { defineComponent } from "vue";
 export default defineComponent({
   name: "LoginForm",
   props: {
@@ -50,17 +50,18 @@ export default defineComponent({
     }
   },
   setup() {
-    const { proxy } = getCurrentInstance();
-    const submitForm = formName => {
-      console.log(proxy);
-      proxy.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    // const { proxy } = getCurrentInstance();
+    const submitForm = (formName: any) => {
+      console.log(formName);
+      // console.log(proxy);
+      // proxy.$refs[formName].validate((valid: boolean) => {
+      //   if (valid) {
+      //     alert("submit!");
+      //   } else {
+      //     console.log("error submit!!");
+      //     return false;
+      //   }
+      // });
     };
     return {
       submitForm

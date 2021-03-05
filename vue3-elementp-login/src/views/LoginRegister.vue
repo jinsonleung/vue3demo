@@ -4,55 +4,11 @@
     <div class="signin-signup">
       <!-- 登录 -->
       <login-form :loginUser="loginUser" :rules="rules" />
-      <!-- <login-form :rules="rules" /> -->
       <!-- 注册 -->
-      <el-form
-        ref="registerForm"
-        :model="registerUser"
-        :rules="registerRules"
-        status-icon
-        label-width="100px"
-        class="registerForm sign-up-form"
-      >
-        <el-form-item label="用户名" prop="userName">
-          <el-input
-            placeholder="Enter user name..."
-            v-model="registerUser.userName"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input
-            placeholder="Enter email..."
-            v-model="registerUser.email"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input
-            type="password"
-            placeholder="Enter password..."
-            v-model="registerUser.password"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="密码2" prop="password2">
-          <el-input
-            type="password"
-            placeholder="Enter password2..."
-            v-model="registerUser.password2"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            class="submit-btn"
-            @click="submitForm('loginForm')"
-            >提交</el-button
-          >
-        </el-form-item>
-        <!-- 找回密码 -->
-        <div class="tiparea">
-          <p>忘记密码？<a>立即找回</a></p>
-        </div>
-      </el-form>
+      <register-form
+        :registerUser="registerUser"
+        :registerRules="registerRules"
+      />
     </div>
     <!-- 左右切换动画 -->
     <div class="panels-container">
@@ -82,83 +38,18 @@
 </template>
 
 <script>
-import { ref, defineComponent } from "vue";
+import { ref, defineComponent, getCurrentInstance } from "vue";
 import LoginForm from "../components/LoginForm.vue";
+import RegisterForm from "../components/RegisterForm.vue";
 import { loginUser, rules } from "../utils/loginVelidators";
+import { registerUser, registerRules } from "../utils/registerValidators";
 
 export default defineComponent({
   name: "LoginRegister",
-  components: { LoginForm },
+  components: { LoginForm, RegisterForm },
   setup() {
     const refData = ref(0);
     const signUpMode = ref(false);
-    const registerUser = ref({
-      userName: "",
-      email: "",
-      password: "",
-      password2: ""
-    });
-
-    const validatePassword2 = (registerRules, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else if (registerUser.value.password !== value) {
-        callback(new Error("两次密码不一致"));
-      } else {
-        callback();
-      }
-    };
-
-    const registerRules = ref({
-      userName: [
-        {
-          required: true,
-          message: "please enter user name...",
-          triger: "blur"
-        },
-        {
-          min: 2,
-          max: 16,
-          message:
-            "user name is more than 2 characters and less than 16 characters"
-        }
-      ],
-      email: [
-        {
-          type: "email",
-          required: true,
-          message: "please enter email...",
-          triger: "blur"
-        }
-      ],
-      password: [
-        {
-          required: true,
-          message: "please enter password",
-          triger: "blur"
-        },
-        {
-          min: 6,
-          max: 30,
-          message:
-            "your password is more than 6 characters and less than 30 characters"
-        }
-      ],
-      password2: [
-        {
-          required: true,
-          message: "please enter password2",
-          triger: "blur"
-        },
-        {
-          min: 6,
-          max: 30,
-          message:
-            "your password2 is more than 6 characters and less than 30 characters"
-        },
-        { validator: validatePassword2, trigger: "blur" }
-      ]
-    });
 
     return {
       refData,
