@@ -1,14 +1,16 @@
 <template>
   <div class="container" :class="{ 'sign-up-mode': signUpMode }">
     <!-- form表单窗口 -->
-    <div class="signin-signup">
-      <!-- 登录 -->
-      <login-form :loginUser="loginUser" :rules="rules" />
-      <!-- 注册 -->
-      <register-form
-        :registerUser="registerUser"
-        :registerRules="registerRules"
-      />
+    <div class="forms-container">
+      <div class="signin-signup">
+        <!-- 登录 -->
+        <login-form :loginUser="loginUser" :rules="rules" />
+        <!-- 注册 -->
+        <register-form
+          :registerUser="registerUser"
+          :registerRules="registerRules"
+        />
+      </div>
     </div>
     <!-- 左右切换动画 -->
     <div class="panels-container">

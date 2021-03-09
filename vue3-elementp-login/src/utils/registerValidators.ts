@@ -1,135 +1,130 @@
-import { ref } from "vue";
+import { ref } from "vue"; //registerValidators
 
-//注册用户接口
 interface RegisterUser {
-  userName: string;
+  name: string;
   email: string;
   password: string;
   password2: string;
+  role: string;
 }
 
-//注册用户响应式对象
 export const registerUser = ref<RegisterUser>({
-  userName: "",
+  name: "",
   email: "",
   password: "",
-  password2: ""
+  password2: "",
+  role: ""
 });
 
 interface RegisterRules {
-  userName: (
+  name: (
     | {
-        required: boolean;
         message: string;
-        triger: string;
-        min?: undefined;
-        max?: undefined;
+        required: boolean;
+        trigger: string;
       }
     | {
         min: number;
         max: number;
         message: string;
-        required?: undefined;
-        triger?: undefined;
+        trigger: string;
       }
   )[];
   email: {
     type: string;
-    required: boolean;
     message: string;
-    triger: string;
+    required: boolean;
+    trigger: string;
   }[];
   password: (
     | {
         required: boolean;
         message: string;
-        triger: string;
-        min?: undefined;
-        max?: undefined;
+        trigger: string;
       }
     | {
         min: number;
         max: number;
         message: string;
-        required?: undefined;
-        triger?: undefined;
+        trigger: string;
       }
   )[];
   password2: (
     | {
         required: boolean;
         message: string;
-        triger: string;
-        min?: undefined;
-        max?: undefined;
+        trigger: string;
       }
     | {
         min: number;
         max: number;
         message: string;
-        required?: undefined;
-        triger?: undefined;
+        trigger: string;
+      }
+    | {
+        validator: (rule: RegisterRules, value: string, callback: any) => void;
+        trigger: string;
       }
   )[];
 }
 
-//两次密码输入规则校验
-const validatePassword2 = (rules: RegisterRules, value: any, callback: any) => {
+const validatePass2 = (rule: RegisterRules, value: string, callback: any) => {
   if (value === "") {
-    callback(new Error("请输入密码"));
-  } else if (registerUser.value.password !== value) {
-    callback(new Error("两次密码不一致"));
+    callback(new Error("请再次输入密码"));
+  } else if (value !== registerUser.value.password) {
+    callback(new Error("两次输入密码不一致!"));
   } else {
     callback();
   }
 };
 
 export const registerRules = ref<RegisterRules>({
-  userName: [
+  name: [
     {
+      message: "用户名不能为空...",
       required: true,
-      message: "please enter user name...",
-      triger: "blur"
+      trigger: "blur"
     },
     {
       min: 2,
-      max: 16,
-      message: "user name is more than 2 characters and less than 16 characters"
+      max: 30,
+      message: "长度在2到30个字符",
+      trigger: "blur"
     }
   ],
   email: [
     {
       type: "email",
+      message: "Email is incorrect...",
       required: true,
-      message: "please enter email...",
-      triger: "blur"
+      trigger: "blur"
     }
   ],
   password: [
     {
       required: true,
-      message: "please enter password",
-      triger: "blur"
+      message: "Password could not be empty...",
+      trigger: "blur"
     },
     {
       min: 6,
       max: 30,
-      message:
-        "your password is more than 6 characters and less than 30 characters"
+      message: "Password's length has to be 6 to 30 characters...",
+      trigger: "blur"
     }
   ],
   password2: [
     {
       required: true,
-      message: "please enter password2",
-      triger: "blur"
+      message: "Password2 could not be empty...",
+      trigger: "blur"
     },
     {
       min: 6,
       max: 30,
-      message:
-        "your password2 is more than 6 characters and less than 30 characters"
-    }
-    //{ validator: validatePassword2, trigger: "blur" }
+      message: "Password's length has to be 6 to 30 characters...",
+      trigger: "blur"
+    },
+    { validator: validatePass2, trigger: "blur" }
   ]
 });

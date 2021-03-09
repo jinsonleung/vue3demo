@@ -9,22 +9,22 @@
   >
     <el-form-item label="邮箱" prop="email">
       <el-input
-        placeholder="Enter email..."
         v-model="loginUser.email"
+        placeholder="Enter email..."
       ></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-input
         type="password"
-        placeholder="Enter password..."
         v-model="loginUser.password"
+        placeholder="Enter password..."
       ></el-input>
     </el-form-item>
     <el-form-item>
       <el-button
+        @click="handleLogin('loginForm')"
         type="primary"
         class="submit-btn"
-        @click="submitForm('loginForm')"
         >提交</el-button
       >
     </el-form-item>
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, getCurrentInstance } from "vue";
 export default defineComponent({
   name: "LoginForm",
   props: {
@@ -50,21 +50,21 @@ export default defineComponent({
     }
   },
   setup() {
-    // const { proxy } = getCurrentInstance();
-    const submitForm = (formName: any) => {
-      console.log(formName);
-      // console.log(proxy);
-      // proxy.$refs[formName].validate((valid: boolean) => {
-      //   if (valid) {
-      //     alert("submit!");
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
+    // @ts-ignore
+    const { proxy } = getCurrentInstance();
+    // 触发登录方法
+    const handleLogin = (formName: string) => {
+      proxy.$refs[formName].validate((valid: boolean) => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     };
     return {
-      submitForm
+      handleLogin
     };
   }
 });
